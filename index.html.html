@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> เครือข่ายแลกเปลี่ยนเรียนรู้ มทบ.43</title>
+<title>Dashboard เครือข่ายแลกเปลี่ยนเรียนรู้ มทบ.43</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Kanit:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -457,13 +457,131 @@
 
   .page { display: none; }
   .page.active { display: block; }
+
+  /* GOOGLE SHEET IMPORT */
+  #tab-gsheet { border-left: 1px solid rgba(255,255,255,0.1); }
+  #tab-gsheet:hover { color: #86efac; }
+  #tab-gsheet.active { color: #86efac; border-bottom-color: #86efac; }
+
+  .gs-panel {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .gs-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--army-dark);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .gs-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 24px; }
+  .gs-input-group { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; }
+  .gs-input-group label { font-size: 13px; font-weight: 600; color: var(--army-dark); display: block; margin-bottom: 6px; }
+  .gs-input-group input {
+    flex: 1; min-width: 280px;
+    padding: 11px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px; font-family: 'Sarabun', sans-serif;
+    outline: none; transition: border .2s;
+  }
+  .gs-input-group input:focus { border-color: var(--army-green); }
+  .gs-btn {
+    padding: 11px 28px;
+    background: linear-gradient(135deg, var(--army-green), var(--army-mid));
+    color: #fff;
+    border: none; border-radius: 10px;
+    font-family: 'Kanit', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity .2s; white-space: nowrap;
+  }
+  .gs-btn:hover { opacity: 0.88; }
+  .gs-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .gs-btn-secondary {
+    padding: 9px 20px;
+    background: transparent;
+    color: var(--army-green);
+    border: 1.5px solid var(--army-green);
+    border-radius: 10px;
+    font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .gs-btn-secondary:hover { background: rgba(45,90,39,0.07); }
+  .gs-steps {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--army-green);
+  }
+  .gs-steps h4 { font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 700; color: var(--army-dark); margin-bottom: 12px; }
+  .gs-steps ol { padding-left: 20px; font-size: 13px; line-height: 2.2; color: var(--text-mid); }
+  .gs-steps code { background: rgba(45,90,39,0.1); padding: 2px 8px; border-radius: 4px; font-size: 12px; color: var(--army-dark); }
+  .gs-status {
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .gs-status.success { background: #d1fae5; color: #065f46; display: block; }
+  .gs-status.error { background: #fee2e2; color: #991b1b; display: block; }
+  .gs-status.loading { background: #fef9c3; color: #854d0e; display: block; }
+  .gs-preview {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: none;
+  }
+  .gs-preview.show { display: block; }
+  .gs-preview table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .gs-preview th { background: var(--army-dark); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; }
+  .gs-preview td { padding: 10px 14px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .gs-preview tr:hover td { background: rgba(201,162,39,0.05); }
+  .gs-col-map { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .gs-col-map label { font-size: 12px; font-weight: 600; color: var(--text-mid); }
+  .gs-col-map select {
+    width: 100%; padding: 8px 12px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: 'Sarabun', sans-serif;
+    background: #fff; margin-top: 4px;
+  }
+  .gs-saved-badge {
+    display: inline-block;
+    background: #d1fae5; color: #065f46;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; margin-left: 8px;
+  }
+  .gs-history { font-size: 12px; color: var(--text-mid); margin-top: 8px; }
+  .gs-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .gs-section-label {
+    font-family: 'Kanit', sans-serif; font-size: 12px; font-weight: 700;
+    color: var(--army-green); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .gs-saved-list { display: flex; flex-direction: column; gap: 8px; }
+  .gs-saved-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .gs-saved-item strong { flex: 1; }
+  .gs-saved-item .gs-item-meta { font-size: 11px; color: var(--text-mid); }
+  .gs-del-btn { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 16px; padding: 4px; border-radius: 6px; }
+  .gs-del-btn:hover { background: #fee2e2; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="header-emblem">มทบ.๔๓</div>
+    <div class="header-emblem">มทบ</div>
     <div class="header-text">
       <h1>Dashboard เครือข่ายแลกเปลี่ยนเรียนรู้</h1>
       <p>ศูนย์เกษตรทฤษฎีใหม่ครบวงจร มณฑลทหารบกที่ ๔๓ • เปรียบเทียบสถิติรายปี</p>
@@ -477,7 +595,10 @@
     <div class="year-tab active" onclick="showYear('all')">ภาพรวม</div>
     <div class="year-tab" onclick="showYear('2567')">ปี ๒๕๖๗ <span class="count-pill">3</span></div>
     <div class="year-tab" onclick="showYear('2568')">ปี ๒๕๖๘ <span class="count-pill">8</span></div>
-    <div class="year-tab" onclick="showYear('2569')">ปี ๒๕๖๙ <span class="count-pill">12</span></div>
+    <div class="year-tab" onclick="showYear('2569')">ปี ๒๕๖๙ <span class="count-pill">13</span></div>
+    <div class="year-tab" id="tab-gsheet" onclick="showYear('gsheet')" style="margin-left:auto;">
+      <span style="font-size:14px;">📥</span> นำเข้า Google Sheet
+    </div>
   </div>
 </div>
 
@@ -489,9 +610,9 @@
     <div class="stat-row">
       <div class="stat-card animate">
         <div class="stat-icon">🌐</div>
-        <div class="stat-value">12</div>
+        <div class="stat-value">13</div>
         <div class="stat-label">เครือข่ายทั้งหมด (ปี ๒๕๖๙)</div>
-        <span class="stat-trend trend-up">+9 จากปี ๒๕๖๗</span>
+        <span class="stat-trend trend-up">+10 จากปี ๒๕๖๗</span>
       </div>
       <div class="stat-card animate">
         <div class="stat-icon">🏫</div>
@@ -506,8 +627,14 @@
         <span class="stat-trend trend-up">+2 จากปี ๒๕๖๗</span>
       </div>
       <div class="stat-card animate">
+        <div class="stat-icon">⚔️</div>
+        <div class="stat-value">2</div>
+        <div class="stat-label">หน่วยทหารพันธมิตร</div>
+        <span class="stat-trend trend-up">+1 ปี ๒๕๖๙</span>
+      </div>
+      <div class="stat-card animate">
         <div class="stat-icon">📈</div>
-        <div class="stat-value">300%</div>
+        <div class="stat-value">333%</div>
         <div class="stat-label">การเติบโตของเครือข่าย (3 ปี)</div>
         <span class="stat-trend trend-up">↑ ต่อเนื่อง</span>
       </div>
@@ -554,7 +681,7 @@
               <td>จำนวนเครือข่ายทั้งหมด</td>
               <td>3 เครือข่าย</td>
               <td>8 เครือข่าย <span class="plus">+5</span></td>
-              <td>12 เครือข่าย <span class="plus">+4</span></td>
+              <td>13 เครือข่าย <span class="plus">+5</span></td>
             </tr>
             <tr>
               <td>ศูนย์กสิกรรมธรรมชาติทุ่งสง</td>
@@ -628,6 +755,12 @@
               <td><span class="dash-cell">—</span></td>
               <td><span class="check">✔</span></td>
             </tr>
+            <tr>
+              <td>พัน.สบร.24 บชร.4</td>
+              <td><span class="dash-cell">—</span></td>
+              <td><span class="dash-cell">—</span></td>
+              <td><span class="check">✔</span></td>
+            </tr>
             <tr style="background:#f8fafc;">
               <td>สถานศึกษา</td>
               <td>0 แห่ง</td>
@@ -644,7 +777,7 @@
               <td>หน่วยทหาร</td>
               <td>0</td>
               <td>1 หน่วย</td>
-              <td>1 หน่วย</td>
+              <td>2 หน่วย</td>
             </tr>
             <tr style="background:#f8fafc;">
               <td>ชุมชน/ครอบครัวกำลังพล</td>
@@ -690,13 +823,14 @@
             </div>
             <div class="tl-item">
               <div class="tl-dot"></div>
-              <div class="tl-year">ปี ๒๕๖๙ — ครบทั้ง 12 เครือข่าย (+4)</div>
+              <div class="tl-year">ปี ๒๕๖๙ — ครบทั้ง 13 เครือข่าย (+5)</div>
               <div class="tl-networks">
                 <div class="tl-net-chip">8 เครือข่ายเดิม</div>
                 <div class="tl-net-chip new">รร.วัดจอมไตร</div>
                 <div class="tl-net-chip new">รร.บ้านไร่ใหญ่</div>
                 <div class="tl-net-chip new">ครอบครัวกำลังพล</div>
                 <div class="tl-net-chip new">ชุมชน/หน่วยงาน</div>
+                <div class="tl-net-chip new">พัน.สบร.24 บชร.4</div>
               </div>
             </div>
           </div>
@@ -937,9 +1071,9 @@
     <div class="stat-row">
       <div class="stat-card animate">
         <div class="stat-icon">🌳</div>
-        <div class="stat-value">12</div>
+        <div class="stat-value">13</div>
         <div class="stat-label">เครือข่ายครบสมบูรณ์ ปี ๒๕๖๙</div>
-        <span class="stat-trend trend-up">+4 จากปี ๒๕๖๘</span>
+        <span class="stat-trend trend-up">+5 จากปี ๒๕๖๘</span>
       </div>
       <div class="stat-card animate">
         <div class="stat-icon">🏫</div>
@@ -948,10 +1082,10 @@
         <span class="stat-trend trend-up">+2 จากปีก่อน</span>
       </div>
       <div class="stat-card animate">
-        <div class="stat-icon">👨‍👩‍👧</div>
+        <div class="stat-icon">⚔️</div>
         <div class="stat-value">2</div>
-        <div class="stat-label">กลุ่มชุมชน/ครอบครัว</div>
-        <span class="stat-trend trend-new">เพิ่มใหม่</span>
+        <div class="stat-label">หน่วยทหารพันธมิตร</div>
+        <span class="stat-trend trend-up">+1 ปี ๒๕๖๙</span>
       </div>
       <div class="stat-card animate">
         <div class="stat-icon">✅</div>
@@ -962,9 +1096,10 @@
     </div>
 
     <div class="card" style="margin-bottom:24px;">
-      <div class="card-header"><div class="icon">📋</div><h2>รายชื่อเครือข่ายทั้งหมด ปี ๒๕๖๙ (ครบ 12 เครือข่าย)</h2></div>
+      <div class="card-header"><div class="icon">📋</div><h2>รายชื่อเครือข่ายทั้งหมด ปี ๒๕๖๙ (ครบ 13 เครือข่าย)</h2></div>
       <div class="card-body" style="padding:0;">
-        <table class="network-table">
+        <div style="overflow-x:auto;">
+        <table class="network-table" id="network-table-2569">
           <thead><tr><th>#</th><th>ชื่อเครือข่าย</th><th>ประเภท</th><th>สถานะ</th><th>การดำเนินการ</th><th>สิ่งที่ได้รับ</th></tr></thead>
           <tbody>
             <tr><td>1</td><td><strong>ศูนย์กสิกรรมธรรมชาติทุ่งสง</strong></td><td><span class="type-badge badge-learn">ศูนย์เรียนรู้</span></td><td><span class="status-dot dot-active"></span>ต่อเนื่อง</td><td>ส่งกำลังพลไปศึกษาดูงาน</td><td>วิทยากรเกษตรอินทรีย์ครบวงจร</td></tr>
@@ -979,8 +1114,10 @@
             <tr style="background:rgba(209,250,229,0.2);"><td>10</td><td><strong>โรงเรียนบ้านไร่ใหญ่</strong></td><td><span class="type-badge badge-school">สถานศึกษา</span></td><td><span class="status-dot dot-new"></span><span class="year-tag tag-2569">ใหม่</span></td><td>รับถ่ายทอดองค์ความรู้</td><td>จัดกิจกรรมเกษตรทฤษฎีใหม่ในโรงเรียน</td></tr>
             <tr style="background:rgba(209,250,229,0.2);"><td>11</td><td><strong>ครอบครัวกำลังพล มทบ.๔๓</strong></td><td><span class="type-badge badge-community">ชุมชนค่าย</span></td><td><span class="status-dot dot-new"></span><span class="year-tag tag-2569">ใหม่</span></td><td>ต่อยอดในพื้นที่บ้านพัก</td><td>ผลผลิตลดค่าใช้จ่ายครัวเรือน</td></tr>
             <tr style="background:rgba(209,250,229,0.2);"><td>12</td><td><strong>ชุมชน/หน่วยงานในพื้นที่</strong></td><td><span class="type-badge badge-community">ชุมชน</span></td><td><span class="status-dot dot-new"></span><span class="year-tag tag-2569">ใหม่</span></td><td>แลกเปลี่ยนพันธุ์พืช/ความรู้</td><td>พันธุ์พืชท้องถิ่น เทคนิคเพาะปลูก</td></tr>
+            <tr style="background:rgba(209,250,229,0.2);"><td>13</td><td><strong>พัน.สบร.24 บชร.4</strong></td><td><span class="type-badge badge-mil">ทหาร</span></td><td><span class="status-dot dot-new"></span><span class="year-tag tag-2569">ใหม่</span></td><td>ต่อยอดโครงการภายในหน่วย</td><td>แลกเปลี่ยนองค์ความรู้/พันธุ์พืชระหว่างหน่วยทหาร</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
@@ -991,7 +1128,7 @@
           <canvas id="chart2569"></canvas>
           <div style="margin-top:16px;">
             <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-              <span>ความก้าวหน้าสู่เป้าหมาย 12 เครือข่าย</span><span style="font-weight:700;">100%</span>
+              <span>ความก้าวหน้าสู่เป้าหมาย 13 เครือข่าย</span><span style="font-weight:700;">100%</span>
             </div>
             <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
           </div>
@@ -1018,6 +1155,72 @@
     </div>
   </div>
 
+  <!-- ===== GOOGLE SHEET IMPORT PAGE ===== -->
+  <div id="page-gsheet" class="page">
+    <div class="gs-panel">
+      <div class="gs-title">📥 นำเข้าข้อมูลจาก Google Sheet</div>
+      <div class="gs-sub">เพิ่มหรืออัปเดตรายชื่อเครือข่ายได้โดยตรงจาก Google Sheet โดยไม่ต้องแก้ไขโค้ด</div>
+
+      <div class="gs-steps">
+        <h4>📋 วิธีเตรียม Google Sheet</h4>
+        <ol>
+          <li>สร้าง Google Sheet ที่มีคอลัมน์: <code>ชื่อเครือข่าย</code>, <code>ประเภท</code>, <code>สถานะ</code>, <code>การดำเนินการ</code>, <code>สิ่งที่ได้รับ</code>, <code>ปี</code></li>
+          <li>ไปที่ <b>File → Share → Publish to web</b> แล้วเลือก <b>CSV format</b></li>
+          <li>คัดลอก URL ที่ได้มาวางในช่องด้านล่าง</li>
+          <li>กด <b>นำเข้าข้อมูล</b> เพื่อโหลดและแสดงผล</li>
+        </ol>
+      </div>
+
+      <div class="gs-section-label">ตั้งค่า URL ของ Google Sheet</div>
+      <div class="gs-input-group">
+        <div style="flex:1;min-width:280px;">
+          <label for="gs-url-input">Google Sheet URL (Publish to Web – CSV)</label>
+          <input type="text" id="gs-url-input" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv" />
+        </div>
+        <button class="gs-btn" onclick="importGoogleSheet()">📥 นำเข้าข้อมูล</button>
+        <button class="gs-btn-secondary" onclick="clearGSInput()">ล้าง</button>
+      </div>
+
+      <div id="gs-status" class="gs-status"></div>
+
+      <div id="gs-col-map-section" style="display:none;">
+        <div class="gs-section-label">จับคู่คอลัมน์ (ถ้าชื่อคอลัมน์ต่างจากค่าเริ่มต้น)</div>
+        <div class="gs-col-map" id="gs-col-map"></div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button class="gs-btn" onclick="applyImport()">✅ นำเข้าและแสดงผล</button>
+          <button class="gs-btn-secondary" onclick="saveGSConfig()">💾 บันทึกการตั้งค่า</button>
+        </div>
+      </div>
+
+      <div id="gs-preview" class="gs-preview" style="margin-top:20px;"></div>
+
+      <hr class="gs-divider">
+
+      <div class="gs-section-label">📂 การตั้งค่าที่บันทึกไว้</div>
+      <div id="gs-saved-list" class="gs-saved-list">
+        <div style="font-size:13px;color:var(--text-mid);padding:12px 0;">ยังไม่มีการตั้งค่าที่บันทึกไว้</div>
+      </div>
+    </div>
+
+    <!-- Preview imported data -->
+    <div id="gs-result-section" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="icon">📊</div>
+          <h2>ข้อมูลเครือข่ายจาก Google Sheet <span id="gs-result-count" class="gs-saved-badge"></span></h2>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div style="overflow-x:auto;">
+            <table class="network-table" id="gs-result-table">
+              <thead><tr><th>#</th><th>ชื่อเครือข่าย</th><th>ประเภท</th><th>สถานะ</th><th>การดำเนินการ</th><th>สิ่งที่ได้รับ</th><th>ปี</th></tr></thead>
+              <tbody id="gs-result-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -1036,6 +1239,7 @@ function showYear(year) {
   if(year === '2567') initChart2567();
   if(year === '2568') initChart2568();
   if(year === '2569') initChart2569();
+  if(year === 'gsheet') renderSavedList();
 }
 
 const COLORS = {
@@ -1061,7 +1265,7 @@ function initAllCharts() {
       labels: ['ปี ๒๕๖๗', 'ปี ๒๕๖๘', 'ปี ๒๕๖๙'],
       datasets: [{
         label: 'จำนวนเครือข่าย',
-        data: [3, 8, 12],
+        data: [3, 8, 13],
         backgroundColor: [
           'rgba(220,38,38,0.7)',
           'rgba(201,162,39,0.8)',
@@ -1090,9 +1294,9 @@ function initAllCharts() {
   ctx2._chartInstance = new Chart(ctx2, {
     type: 'doughnut',
     data: {
-      labels: ['สถานศึกษา (5)', 'ราชการ (4)', 'ชุมชน/ครอบครัว (2)', 'ทหาร (1)'],
+      labels: ['สถานศึกษา (5)', 'ราชการ (4)', 'ชุมชน/ครอบครัว (2)', 'ทหาร (2)'],
       datasets: [{
-        data: [5, 4, 2, 1],
+        data: [5, 4, 2, 2],
         backgroundColor: [COLORS.blue, COLORS.green, COLORS.orange, COLORS.red],
         borderWidth: 2,
         borderColor: '#fff',
@@ -1117,7 +1321,7 @@ function initAllCharts() {
       datasets: [
         { label: 'ศูนย์เรียนรู้', data: [1,1,1], backgroundColor: COLORS.purple },
         { label: 'ราชการ', data: [2,3,4], backgroundColor: COLORS.green },
-        { label: 'ทหาร', data: [0,1,1], backgroundColor: COLORS.red },
+        { label: 'ทหาร', data: [0,1,2], backgroundColor: COLORS.red },
         { label: 'สถานศึกษา', data: [0,3,5], backgroundColor: COLORS.blue },
         { label: 'ชุมชน/ครอบครัว', data: [0,0,2], backgroundColor: COLORS.orange },
       ]
@@ -1165,8 +1369,8 @@ function initChart2569() {
   ctx._chartInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['ศูนย์เรียนรู้ (1)', 'ราชการ (4)', 'ทหาร (1)', 'สถานศึกษา (5)', 'ชุมชน (2)'],
-      datasets: [{ data: [1,4,1,5,2], backgroundColor: [COLORS.purple, COLORS.green, COLORS.red, COLORS.blue, COLORS.orange], borderWidth: 2, borderColor: '#fff' }]
+      labels: ['ศูนย์เรียนรู้ (1)', 'ราชการ (4)', 'ทหาร (2)', 'สถานศึกษา (5)', 'ชุมชน (2)'],
+      datasets: [{ data: [1,4,2,5,2], backgroundColor: [COLORS.purple, COLORS.green, COLORS.red, COLORS.blue, COLORS.orange], borderWidth: 2, borderColor: '#fff' }]
     },
     options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun', size: 12 }, padding: 10 } } } }
   });
@@ -1175,7 +1379,239 @@ function initChart2569() {
 // Init on load
 window.addEventListener('DOMContentLoaded', () => {
   initAllCharts();
+  renderSavedList();
+  loadLastUrl();
 });
+
+// ===================== GOOGLE SHEET IMPORT =====================
+let gsRawData = [];
+let gsHeaders = [];
+
+const TYPE_MAP = {
+  'สถานศึกษา': '<span class="type-badge badge-school">สถานศึกษา</span>',
+  'ราชการ':    '<span class="type-badge badge-gov">ราชการ</span>',
+  'ทหาร':      '<span class="type-badge badge-mil">ทหาร</span>',
+  'ชุมชน':     '<span class="type-badge badge-community">ชุมชน</span>',
+  'ครอบครัว':  '<span class="type-badge badge-community">ชุมชนค่าย</span>',
+  'ศูนย์เรียนรู้': '<span class="type-badge badge-learn">ศูนย์เรียนรู้</span>',
+};
+const STATUS_MAP = {
+  'ใหม่':     '<span class="status-dot dot-new"></span><span class="year-tag tag-2569">ใหม่</span>',
+  'ต่อเนื่อง': '<span class="status-dot dot-active"></span>ต่อเนื่อง',
+};
+
+function setStatus(msg, type='loading') {
+  const el = document.getElementById('gs-status');
+  el.className = 'gs-status ' + type;
+  el.textContent = msg;
+}
+
+async function importGoogleSheet() {
+  const url = document.getElementById('gs-url-input').value.trim();
+  if(!url) { setStatus('⚠️ กรุณาใส่ URL ของ Google Sheet', 'error'); return; }
+
+  setStatus('⏳ กำลังโหลดข้อมูล...', 'loading');
+  document.getElementById('gs-col-map-section').style.display = 'none';
+  document.getElementById('gs-preview').innerHTML = '';
+  document.getElementById('gs-preview').className = 'gs-preview';
+
+  try {
+    // Try direct fetch first, fallback to CORS proxy
+    let csvText = '';
+    try {
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('fetch failed');
+      csvText = await res.text();
+    } catch(e) {
+      // Use allorigins proxy
+      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+      const res2 = await fetch(proxy);
+      const json = await res2.json();
+      csvText = json.contents;
+    }
+
+    const rows = parseCSV(csvText);
+    if(rows.length < 2) { setStatus('❌ ไม่พบข้อมูลใน Sheet หรือ format ไม่ถูกต้อง', 'error'); return; }
+
+    gsHeaders = rows[0];
+    gsRawData = rows.slice(1).filter(r => r.some(c => c.trim()));
+
+    renderColMap(gsHeaders);
+    renderPreview(gsHeaders, gsRawData.slice(0,5));
+    setStatus('✅ โหลดสำเร็จ ' + gsRawData.length + ' แถว — ตรวจสอบและจับคู่คอลัมน์ด้านล่าง', 'success');
+    document.getElementById('gs-col-map-section').style.display = 'block';
+    document.getElementById('gs-preview').className = 'gs-preview show';
+
+    // Save last URL
+    localStorage.setItem('gs_last_url', url);
+  } catch(err) {
+    setStatus('❌ โหลดไม่สำเร็จ: ' + err.message + ' — ตรวจสอบว่า Sheet เป็น "Publish to web" แบบ CSV', 'error');
+  }
+}
+
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/);
+  return lines.map(line => {
+    const result = []; let cur = ''; let inQ = false;
+    for(let i=0; i<line.length; i++) {
+      if(line[i]==='"') { inQ = !inQ; }
+      else if(line[i]===',' && !inQ) { result.push(cur.trim()); cur=''; }
+      else { cur += line[i]; }
+    }
+    result.push(cur.trim());
+    return result;
+  }).filter(r => r.length > 0 && r.some(c => c.trim()));
+}
+
+function renderColMap(headers) {
+  const fields = [
+    { key:'name',    label:'ชื่อเครือข่าย' },
+    { key:'type',    label:'ประเภท' },
+    { key:'status',  label:'สถานะ' },
+    { key:'action',  label:'การดำเนินการ' },
+    { key:'result',  label:'สิ่งที่ได้รับ' },
+    { key:'year',    label:'ปี' },
+  ];
+  const opts = headers.map((h,i) => `<option value="${i}">${h}</option>`).join('');
+  const defaultIdx = (label) => {
+    const aliases = {
+      name:   ['ชื่อ','name','เครือข่าย'],
+      type:   ['ประเภท','type','category'],
+      status: ['สถานะ','status'],
+      action: ['การดำเนิน','action','ดำเนินการ'],
+      result: ['สิ่งที่ได้','result','ผล'],
+      year:   ['ปี','year'],
+    };
+    const keys = aliases[label] || [];
+    for(let i=0;i<headers.length;i++){
+      if(keys.some(k => headers[i].toLowerCase().includes(k.toLowerCase()))) return i;
+    }
+    return 0;
+  };
+  document.getElementById('gs-col-map').innerHTML = fields.map(f => `
+    <div>
+      <label>${f.label}</label>
+      <select id="col-${f.key}">
+        <option value="-1">— ไม่มี —</option>
+        ${headers.map((h,i) => `<option value="${i}" ${defaultIdx(f.key)==i?'selected':''}>${h}</option>`).join('')}
+      </select>
+    </div>
+  `).join('');
+}
+
+function renderPreview(headers, rows) {
+  const preview = document.getElementById('gs-preview');
+  preview.innerHTML = `
+    <div style="padding:12px 16px;background:var(--army-dark);color:rgba(255,255,255,0.7);font-size:12px;">ตัวอย่างข้อมูล (${rows.length} แถวแรก)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead><tr>${headers.map(h=>`<th style="background:#f1f5f9;padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #e2e8f0;">${h}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(r=>`<tr>${r.map(c=>`<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">${c}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table>
+  `;
+}
+
+function getColVal(row, key) {
+  const sel = document.getElementById('col-' + key);
+  if(!sel) return '';
+  const idx = parseInt(sel.value);
+  if(idx < 0 || idx >= row.length) return '';
+  return row[idx] || '';
+}
+
+function applyImport() {
+  if(!gsRawData.length) { setStatus('❌ ยังไม่มีข้อมูล กรุณาโหลด Sheet ก่อน', 'error'); return; }
+
+  const tbody = document.getElementById('gs-result-tbody');
+  tbody.innerHTML = gsRawData.map((row, i) => {
+    const name   = getColVal(row,'name');
+    const type   = getColVal(row,'type');
+    const status = getColVal(row,'status');
+    const action = getColVal(row,'action');
+    const result = getColVal(row,'result');
+    const year   = getColVal(row,'year');
+    const typeBadge   = TYPE_MAP[type] || `<span class="type-badge badge-community">${type}</span>`;
+    const statusBadge = STATUS_MAP[status] || `<span class="status-dot dot-active"></span>${status}`;
+    const yearTag = year ? `<span class="year-tag tag-2569">${year}</span>` : '';
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${name}</strong></td>
+      <td>${typeBadge}</td>
+      <td>${statusBadge}</td>
+      <td>${action}</td>
+      <td>${result}</td>
+      <td>${yearTag}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('gs-result-count').textContent = gsRawData.length + ' รายการ';
+  document.getElementById('gs-result-section').style.display = 'block';
+  document.getElementById('gs-result-section').scrollIntoView({ behavior:'smooth', block:'start' });
+  setStatus('✅ แสดงผลสำเร็จ ' + gsRawData.length + ' รายการ', 'success');
+}
+
+function saveGSConfig() {
+  const url = document.getElementById('gs-url-input').value.trim();
+  if(!url) { setStatus('❌ กรุณาใส่ URL ก่อนบันทึก', 'error'); return; }
+  const saved = getSavedConfigs();
+  const name = prompt('ตั้งชื่อการตั้งค่านี้:', 'เครือข่าย ปี ' + new Date().getFullYear());
+  if(!name) return;
+  saved.push({ name, url, date: new Date().toLocaleDateString('th-TH') });
+  localStorage.setItem('gs_configs', JSON.stringify(saved));
+  renderSavedList();
+  setStatus('💾 บันทึกการตั้งค่า "' + name + '" เรียบร้อย', 'success');
+}
+
+function getSavedConfigs() {
+  try { return JSON.parse(localStorage.getItem('gs_configs') || '[]'); } catch(e) { return []; }
+}
+
+function renderSavedList() {
+  const saved = getSavedConfigs();
+  const el = document.getElementById('gs-saved-list');
+  if(!el) return;
+  if(!saved.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--text-mid);padding:12px 0;">ยังไม่มีการตั้งค่าที่บันทึกไว้</div>';
+    return;
+  }
+  el.innerHTML = saved.map((cfg, i) => `
+    <div class="gs-saved-item">
+      <strong>${cfg.name}</strong>
+      <span class="gs-item-meta">${cfg.date}</span>
+      <button class="gs-btn-secondary" style="padding:6px 14px;font-size:12px;" onclick="loadSavedConfig(${i})">โหลด</button>
+      <button class="gs-del-btn" onclick="deleteSavedConfig(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function loadSavedConfig(i) {
+  const saved = getSavedConfigs();
+  if(!saved[i]) return;
+  document.getElementById('gs-url-input').value = saved[i].url;
+  setStatus('📂 โหลดการตั้งค่า "' + saved[i].name + '" แล้ว — กด "นำเข้าข้อมูล" เพื่อดึงข้อมูล', 'loading');
+}
+
+function deleteSavedConfig(i) {
+  if(!confirm('ลบการตั้งค่านี้?')) return;
+  const saved = getSavedConfigs();
+  saved.splice(i, 1);
+  localStorage.setItem('gs_configs', JSON.stringify(saved));
+  renderSavedList();
+}
+
+function clearGSInput() {
+  document.getElementById('gs-url-input').value = '';
+  document.getElementById('gs-status').className = 'gs-status';
+  document.getElementById('gs-col-map-section').style.display = 'none';
+  document.getElementById('gs-preview').innerHTML = '';
+  document.getElementById('gs-preview').className = 'gs-preview';
+  document.getElementById('gs-result-section').style.display = 'none';
+  gsRawData = []; gsHeaders = [];
+}
+
+function loadLastUrl() {
+  const last = localStorage.getItem('gs_last_url');
+  if(last) document.getElementById('gs-url-input').value = last;
+}
 </script>
 </body>
 </html>
